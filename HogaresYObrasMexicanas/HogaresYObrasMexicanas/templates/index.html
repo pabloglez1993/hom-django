@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block header_block %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Proyectos</a>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="Nuevo_proyecto.html">   Crear nuevo proyecto +   </a>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        
+    </form>
+
+    </div>
+    
+  </nav>
+{% endblock header_block %}
+
+
+{% block content_block %}
+<div id="Proyectos">
+
+    {% for proyecto in proyectos %}
+    <div class="card">
+        <div class="card-header">
+          {{ proyecto.titulo }}
+        </div>
+        <div class="card-body">
+            
+          <h5 class="card-title">titulo descriptivo</h5>
+          <p class="card-text">Descripcion general:
+          </p>
+          <br>
+          <p>Presusupuesto del proyecto / Costo real</p>
+          <a href="DetallesDeProyecto.html" class="btn btn-primary">Detalles del proyecto</a>
+          <a href="EditarProyecto.html" class="btn btn-primary">Editar proyecto</a>
+          <a href="#" class="btn btn-primary">Eliminar proyecto</a>
+        </div>
+      </div>
+    {% endfor %}
+
+
+</div>
+{% endblock content_block %}
