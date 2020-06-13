@@ -11,15 +11,15 @@ class  ProyectoAdmin(admin.ModelAdmin):
 
 @admin.register(Partida)
 class  PartidaAdmin(admin.ModelAdmin):
-    list_display =  ("nombre","proyecto")
+    list_display =  ("nombre",)
 
 @admin.register(Concepto)
 class  ConceptoAdmin(admin.ModelAdmin):
-    list_display =  ("nombre","partida")
+    list_display =  ("nombre",)
 
 @admin.register(Unidad)
 class  UnidadAdmin(admin.ModelAdmin):
-    list_display =  ("nombre","concepto","precio_unitario","sub_total")    
+    list_display =  ("nombre","precio_unitario","sub_total")    
     
     def sub_total(self, obj):
         return obj.cantidad * obj.precio_unitario
