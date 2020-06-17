@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework import routers
-from HogaresYObrasMexicanas.views import HomeView,ProyectosViewSet,PartidasViewSet
+from HogaresYObrasMexicanas.views import *#HomeView,ProyectosViewSet,PartidasViewSet
 
 router = routers.DefaultRouter()
 router.register(r"proyectos",ProyectosViewSet)
@@ -25,5 +25,19 @@ router.register(r"partidas",PartidasViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
+    #displays
     path('', HomeView.as_view()),
+    path('proyecto/partidas/',PartidasDisplay.as_view()),
+    path('proyecto/partidas/conceptos/',ConceptosDisplay.as_view()),
+    path('proyecto/partidas/conceptos/unidades/',UnidadesDisplay.as_view()),
+    #registros
+    path('registro/proyecto/',RegistroProyectoDisplay.as_view()),
+    path('registro/partida/',RegistroPartidaDisplay.as_view()),
+    path('registro/concepto/',RegistroConceptoDisplay.as_view()),
+    path('registro/unidad/',RegistroUnidadeDisplay.as_view()),
+    #edit
+    path('editar/proyecto',EditProyectoDisplay.as_view()),
+    path('editar/partida',EditPartidaDisplay.as_view()),
+    path('editar/concepto',EditConceptoDisplay.as_view()),
+    path('editar/unidad',EditUnidadDisplay.as_view()),
 ]
