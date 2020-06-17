@@ -1,6 +1,6 @@
 from django.db import models
 
-from users import models as users_models
+from users.models import Architect
 
 class Owner(models.Model):
     first_name = models.CharField(max_length=50)
@@ -11,7 +11,7 @@ class Owner(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 class Project(models.Model):
-    architect = models.ForeignKey(users_models.Architect, on_delete=models.CASCADE)
+    architect = models.ForeignKey(Architect, on_delete=models.CASCADE)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)

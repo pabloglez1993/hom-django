@@ -1,6 +1,6 @@
 from django.urls import path
 
-from projects import views
+from users import views
 #import pdb; pdb.set_trace()
 
 urlpatterns = [

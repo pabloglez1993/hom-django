@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Projects list</title>
+{% endblock %}
+
+{% block nav %}
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="add_project.html">Add Project</a>
+        </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search Project" aria-label="Search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block container %}
+    {% for project in projects %}
+    <div class="card bg-light">
+            <h5 class="card-header">
+              {{ project.name }}
+            </h5>
+            <div class="card-body">
+              <h5 class="card-title"><b>Owner:</b> {{ project.owner }}</h5>
+              <p class="card-text"><b>Type:</b> {{ project.type }} <b>Area:</b> {{ project.area }}</p>
+              <p class="card-text"><b>Estimated Price:</b> {{ project.sum_estimated_price }} <b>Real Price:</b> {{ project.sum_real_price }}</p>
+              <p class="card-text"><b>Started:</b> {{ project.start_date }} <b>Ended:</b> {{ project.end_date }}</p>
+              <a href="#" class="btn btn-secondary">Details</a>
+              <a href="#" class="btn btn-dark">Edit</a>
+              <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+    {% endfor %}
+{% endblock %}

@@ -1,15 +1,10 @@
 from django.shortcuts import render
-
-projects = [
-    {
-        'name': 'P1',
-        'owner': 'Pablo'
-    },
-    {
-        'name': 'P2',
-        'owner': 'Felipe'
-    },
-]
+from .models import Project
+from django.db.models import Sum
 
 def list_projects(request):
-    return render(request, 'projects.html', {'projects': projects})
+    Projects = Project.objects.annotate(
+        sum_estimated_price=Sum('task__concept__estimated_price'),
+        sum_real_price=Sum('task__concept__real_price')
+    )
+    return render(request, 'projects/list.html', {'projects': Projects})
