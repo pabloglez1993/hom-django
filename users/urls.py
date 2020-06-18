@@ -4,5 +4,6 @@ from users import views
 #import pdb; pdb.set_trace()
 
 urlpatterns = [
-    path('', views.list_projects),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]
