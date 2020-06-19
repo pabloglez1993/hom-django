@@ -11,11 +11,18 @@ class Owner(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 class Project(models.Model):
+    BUILDING_TYPES = [
+        ('Department', 'Department'),
+        ('House', 'House'),
+        ('Building', 'Building'),
+        ('Reparation', 'Reparation'),
+        ('Other', 'Other'),
+    ]
     architect = models.ForeignKey(Architect, on_delete=models.CASCADE)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    type = models.CharField(max_length=255, blank=True, null=True)
+    type = models.CharField(max_length=10, choices=BUILDING_TYPES, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
