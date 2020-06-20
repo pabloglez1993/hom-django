@@ -92,3 +92,9 @@ def edit_project(request, id):
             'types': Project.BUILDING_TYPES
         }
     )
+    
+@login_required
+def delete_project(request, id):
+    project = Project.objects.get(pk=id)
+    project.delete()
+    return redirect('list_projects')
