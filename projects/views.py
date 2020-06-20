@@ -23,25 +23,12 @@ def list_projects(request):
 
 @login_required
 def add_project(request):
-    architects = Architect.objects.values('architect__username')
-    owners = Owner.objects.values('first_name')
-    
+    architects = Architect.objects.values('architect__username', 'id')
+    owners = Owner.objects.values('first_name', 'last_name', 'id')
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data
-            
-            project = Project(
-                architect=data['architect'],
-                owner=data['owner'],
-                name=data['name'],
-                area=data['area'],
-                type=data['type'],
-                start_date=data['start_date'],
-                end_date=data['end_date']
-            )
-            project.save()
-            
+            form.save()
             return redirect('list_projects')
     else:
         form = ProjectForm()
@@ -60,14 +47,13 @@ def add_project(request):
 @login_required
 def edit_project(request, id):
     project = Project.objects.get(pk=id)
-    architects = Architect.objects.values('architect__username')
-    owners = Owner.objects.values('first_name')
+    architects = Architect.objects.values('architect__username', 'id')
+    owners = Owner.objects.values('first_name', 'last_name', 'id')
     
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-
             project.architect = data['architect']
             project.owner = data['owner']
             project.name = data['name']
@@ -76,7 +62,6 @@ def edit_project(request, id):
             project.start_date = data['start_date']
             project.end_date = data['end_date']
             project.save()
-            
             return redirect('list_projects')
     else:
         form = ProjectForm()

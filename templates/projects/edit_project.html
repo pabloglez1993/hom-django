@@ -26,18 +26,18 @@
         <div class="form-group col-md-6">
             <label for="architect">Architect</label>
             <select id="architect" class="form-control" name="architect">
-                <option selected>{{ project.architect }}</option>
+                <option value={{ project.architect_id }} selected>{{ project.architect }}</option>
                 {% for architect in architects %}
-                <option>{{ architect.architect__username }}</option>
+                <option  value={{ architect.id }}>{{ architect.architect__username }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="form-group col-md-6">
             <label for="owner">Owner</label>
             <select id="owner" class="form-control" name="owner">
-                <option selected>{{ project.owner.first_name }}</option>
+                <option value={{ project.owner_id }} selected>{{ project.owner.first_name }}</option>
                 {% for owner in owners %}
-                <option>{{ owner.first_name }}</option>
+                <option value={{ owner.id }}>{{ owner.first_name}} {{ owner.last_name }}</option>
                 {% endfor %}
             </select>
         </div>

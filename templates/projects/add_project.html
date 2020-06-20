@@ -27,7 +27,7 @@
             <label for="architect">Architect</label>
             <select id="architect" class="form-control" name="architect">
                 {% for architect in architects %}
-                <option>{{ architect.architect__username }}</option>
+                <option value={{ architect.id }}>{{ architect.architect__username }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -35,7 +35,7 @@
             <label for="owner">Owner</label>
             <select id="owner" class="form-control" name="owner">
                 {% for owner in owners %}
-                <option>{{ owner.first_name }}</option>
+                <option value={{ owner.id }}>{{ owner.first_name }} {{ owner.last_name }}</option>
                 {% endfor %}
             </select>
         </div>
