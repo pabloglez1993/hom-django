@@ -18,8 +18,8 @@
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search Project" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'list_projects' %} ">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search Project" aria-label="Search" name="search">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
     </form>
 </div>
@@ -29,7 +29,7 @@
 <div class="row">
     {% for project in projects %}
     <div class="col-sm-12 col-md-6">
-        <div class="card bg-light">
+        <div class="card bg-light mt-3">
                 <h5 class="card-header">
                 {{ project.name }}
                 </h5>
