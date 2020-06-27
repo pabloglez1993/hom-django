@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo_agregar_proyecto.css' %}">
+    <title>Editar Unidades</title>
+</head>
+
+<body>
+    <div class="container" id="advanced-search-form">
+        <h2>Unidad</h2>
+        <form>
+            <div class="form-group">
+                <label for="Titulo de la Unidad">Titulo de la Unidad</label>
+                <input type="text" class="form-control" placeholder="Titulo de la Unidad" name="titulo-unidad">
+            </div>
+            <div class="form-group">
+                <label for="Descripcion de la Unidad">Descripcion de la Unidad</label>
+                <textarea class="form-control" placeholder="Descripcion de la Unidad" name="descripcion-unidad" rows="8"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="Cantidad de la Unidad">Cantidad de la Unidad</label>
+                <input type="number" class="form-control" placeholder="Cantidad de la Unidad" name="cantidad-unidad">
+            </div>
+            <div class="form-group">
+                <label for="Precio de la Unidad">Precio de la Unidad</label>
+                <input type="number" class="form-control" placeholder="Precio de la Unidad" name="precio-unidad">
+            </div>
+            <div class="form-group">
+                <label for="Precio de las Unidades">Precio de las Unidades</label>
+                <input type="number" class="form-control" placeholder="Precio de las Unidades" name="precio-unidades">
+            </div>
+            <div class="clearfix"></div>
+            <button type="submit" class="btn btn-info btn-lg btn-responsive" name="editar-unidad"> <span class="glyphicon glyphicon-search"></span> Editar</button>
+        </form>
+    </div>
+</body>
+
+</html>

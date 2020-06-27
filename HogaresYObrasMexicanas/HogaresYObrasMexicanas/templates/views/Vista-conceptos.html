@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block header_block %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <p class="navbar-brand" href="#">Conceptos</p>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="#">   Crear nuevo Concepto +   </a>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        
+    </form>
+
+    </div>
+    
+  </nav>
+{% endblock header_block %}
+
+
+{% block content_block %}
+<div id="Conceptos">
+
+    {% for Concepto in Conceptos %}
+    <div class="card">
+        <div class="card-header">
+          {{ Concepto.titulo }}
+        </div>
+        <div class="card-body">
+            
+         
+          <p class="card-text">Descripcion general:
+          </p>
+          <br>
+          <p>Presusupuesto del Concepto / Costo real</p>
+          <a href="DetallesDeConcepto.html" class="btn btn-primary">Detalles del Concepto</a>
+          <a href="EditarConcepto.html" class="btn btn-primary">Editar Concepto</a>
+          <a href="#" class="btn btn-primary">Eliminar Concepto</a>
+        </div>
+      </div>
+    {% endfor %}
+
+
+</div>
+{% endblock content_block %}

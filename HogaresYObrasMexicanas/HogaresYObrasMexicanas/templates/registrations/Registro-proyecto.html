@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo_agregar_proyecto.css' %}">
+    <title>Agregar Proyecto</title>
+</head>
+
+<body>
+    <div class="container" id="advanced-search-form">
+        <h2>Registro del proyecto</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="Nombre-del-proyecto">Nombre del proyecto</label>
+                <input type="text" class="form-control" placeholder="Nombre del proyecto" name="Nombre-del-proyecto" value="">
+            </div>
+            <div class="form-group">
+                <label for="Fecha-de-inicio">Fecha de inicion del proyecto</label>
+                <input type="date" class="form-control" name="Fecha-de-inicio">
+            </div>
+            <div class="form-group">
+                <label for="Fecha-de-finalizacion">Finalización del proyecto</label>
+                <input type="date" class="form-control" name="Fecha-de-finalizacion">
+            </div>
+            <div class="form-group">
+                <label for="proyecto-tel">Telefono del propietario</label>
+                <input type="tel" class="form-control" placeholder="Telefono del propietario" name="proyecto-tel">
+            </div>
+            <div class="form-group">
+                <label for="email">Email del propietario</label>
+                <input type="email" class="form-control" placeholder="Email" name="email">
+            </div>
+ 
+            <div class="form-group">
+                <label for="Descripcion-del-proyecto">Descripcion del proyecto</label>
+                <textarea class="form-control" name="Descripcion-del-proyecto" rows="1"></textarea>
+            </div>
+            <h2>Direccion</h2>
+            <div class="form-group">
+                <label for="Direccion-estado">Estado</label>
+                <input type="text" class="form-control" placeholder="Estado" name="Direccion-estado" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-municipio">Municipio</label>
+                <input type="text" class="form-control" placeholder="Municipio" name="Direccion-municipio" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-cp">Codigo postal</label>
+                <input type="text" class="form-control" placeholder="C.P." name="Direccion-cp" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-colonia">Colonia</label>
+                <input type="text" class="form-control" placeholder="Colonia" name="Direccion-colonia" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-calle">Calle</label>
+                <input type="text" class="form-control" placeholder="Calle" name="Direccion-calle" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-numero-exterior">Numero exterior</label>
+                <input type="text" class="form-control" placeholder="Numero exterior" name="Direccion-numero-exterior" value="">
+            </div>
+            <div class="form-group">
+                <label for="Direccion-numero-interior">Numero interior</label>
+                <input type="text" class="form-control" placeholder="Numero interior" name="Direccion-numero-interior" value="">
+            </div>
+            <div class="clearfix"></div>
+            <button type="submit" class="btn btn-info btn-lg btn-responsive" name="button"> <span class="glyphicon"></span>Registrar</button>
+        </form>
+    </div>
+</body>
+
+</html>

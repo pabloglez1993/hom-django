@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block header_block %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <p class="navbar-brand" href="#">partidas</p>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="#">      </a>
+    <a class="navbar-brand" href="#">   Crear nueva partida +   </a>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        
+    </form>
+
+    </div>
+    
+  </nav>
+{% endblock header_block %}
+
+
+{% block content_block %}
+<div id="partidas">
+
+    {% for partida in partidas %}
+    <div class="card">
+        <div class="card-header">
+          {{ partida.titulo }}
+        </div>
+        <div class="card-body">
+            
+         
+          <p class="card-text">Descripcion general:
+          </p>
+          <br>
+          <p>Presusupuesto de la partida / Costo real</p>
+          <a href="DetallesDepartida.html" class="btn btn-primary">Detalles de la partida</a>
+          <a href="Editarpartida.html" class="btn btn-primary">Editar partida</a>
+          <a href="#" class="btn btn-primary">Eliminar partida</a>
+        </div>
+      </div>
+    {% endfor %}
+
+
+</div>
+{% endblock content_block %}
