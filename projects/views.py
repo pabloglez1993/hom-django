@@ -110,3 +110,26 @@ def list_tasks(request, id):
             'tasks_detail': tasks_detail
         }
     )
+
+@login_required
+def add_task(request):
+    architects = Architect.objects.values('architect__username', 'id')
+    owners = Owner.objects.values('first_name', 'last_name', 'id')
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_projects')
+    else:
+        form = ProjectForm()
+
+    return render(
+        request, 
+        'projects/add_project.html',
+        {
+            'form': form, 
+            'architects': architects,
+            'owners': owners,
+            'types': Project.BUILDING_TYPES
+        }
+    )
