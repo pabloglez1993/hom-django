@@ -5,7 +5,7 @@ from users.models import Architect
 from django.db.models import Sum, Max, Min
 from datetime import datetime, timedelta
 
-from projects.forms import ProjectForm
+from projects.forms import ProjectForm,TaskForm
 
 @login_required
 def list_projects(request):
@@ -106,27 +106,63 @@ def list_tasks(request, id):
         request, 
         'calendar/list_tasks.html',
         {
+            'project': project,
             'weeks_project': range(1, weeks_project),
             'tasks_detail': tasks_detail
         }
     )
 
 @login_required
-def add_task(request):
-    architects = Architect.objects.values('architect__username', 'id')
-    owners = Owner.objects.values('first_name', 'last_name', 'id')
+def add_task(request,id):
+
+    project = Project.objects.get(pk=id)
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
+        form = TaskForm(request.POST)
         if form.is_valid():
+            form.project= project
             form.save()
-            return redirect('list_projects')
+            return redirect('list_tasks/')
     else:
-        form = ProjectForm()
+        form = TaskForm()
 
     return render(
         request, 
-        'projects/add_project.html',
+        'calendar/add_task.html',
         {
+            'id': id,
+            'form': form, 
+        }
+    )
+
+def delete_task(request, id):
+    task = Task.objects.get(pk=id)
+    task.delete()
+    return redirect('list_task')
+
+
+@login_required
+def edit_task(request, project_id, task_id):
+    project = Project.objects.get(pk=project_id)
+    task = Task.objects.get(pk=task_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            task.project = project_id
+            task.name = data['name']
+            task.start_date = data['start_date']
+            task.end_date = data['end_date']
+            project.save()
+            return redirect('list_task/')
+    else:
+        form = TaskForm()
+
+    return render(
+        request, 
+        'calendar/edit_task.html', 
+        {
+            'task':task,
+            'project': project, 
             'form': form, 
             'architects': architects,
             'owners': owners,

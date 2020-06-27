@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Edit task</title>
+{% endblock %}
+
+{% block nav %}
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'list_tasks' id %}">tasks</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block container %}
+<div style="height: 80vh" class="row">
+<div class="col-4 mx-auto my-auto">
+<form method="POST" action="{% url 'edit_task' task.id %}">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="architect">Architect</label>
+            <select id="architect" class="form-control" name="architect">
+                <option value={{ task.architect_id }} selected>{{ task.architect }}</option>
+                {% for architect in architects %}
+                <option  value={{ architect.id }}>{{ architect.architect__username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="owner">Owner</label>
+            <select id="owner" class="form-control" name="owner">
+                <option value={{ task.owner_id }} selected>{{ task.owner.first_name }}</option>
+                {% for owner in owners %}
+                <option value={{ owner.id }}>{{ owner.first_name}} {{ owner.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="name">task Name</label>
+        <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="name" value="{{ task.name }}" name="name">
+        <div class="invalid-feedback">
+            {% for error in form.name.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="area">Area</label>
+            <input type="number" class="form-control" id="area" value="{{ task.area }}" name="area">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="type">Type</label>
+            <select id="type" class="form-control" name="type">
+                <option selected>{{ task.type }}</option>
+                {% for type in types %}
+                <option>{{ type.0 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+        <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="start_date">Start Date</label>
+            <input type="date" class="form-control" id="start_date" value="{{ task.start_date|date:'Y-m-d' }}" name="start_date">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="end_date">End Date</label>
+            <input type="date" class="form-control" id="end_date" value="{{ task.end_date|date:'Y-m-d' }}" name="end_date">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-dark">Save</button>
+</form>
+</div>
+</div>
+{% endblock %}
