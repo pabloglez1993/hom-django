@@ -1,6 +1,20 @@
+from enum import Enum, EnumMeta
 from django.db import models
-
 from users.models import Architect
+
+
+class Meta(EnumMeta):
+    def __iter__(self):
+        return ((choice.value, choice.name) for choice in super().__iter__())
+
+
+class BuildingTypeChoices(Enum, metaclass=Meta):
+    DEPARTMENT = 'Department'
+    HOUSE = 'House'
+    BUILDING = 'Building'
+    REPARATION = 'Reparation'
+    OTHER = 'Other'
+
 
 class Owner(models.Model):
     first_name = models.CharField(max_length=50)
@@ -9,6 +23,7 @@ class Owner(models.Model):
     
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
 
 class Project(models.Model):
     BUILDING_TYPES = [
@@ -22,9 +37,11 @@ class Project(models.Model):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    type = models.CharField(max_length=10, choices=BUILDING_TYPES, blank=True, null=True)
+    type = models.CharField(max_length=10, choices=BuildingTypeChoices, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_add=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -34,6 +51,8 @@ class Task(models.Model):
     name = models.CharField(max_length=255)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_add=True)
 
     def __str__(self):
         return f'{self.project} - {self.name}'
@@ -46,6 +65,8 @@ class Concept(models.Model):
     unit = models.CharField(max_length=20, blank=True, null=True)
     real_volume = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     real_price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_add=True)
     
     def __str__(self):
         return f'{self.task} - {self.description}'

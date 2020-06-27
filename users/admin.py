@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from users.models import Architect
 
-@admin.register(Architect)
+
 class ArchitectAdmin(admin.ModelAdmin):
     list_display = ('architect', 'cell_phone',)
     #list_display_links = ()
@@ -18,7 +18,7 @@ class ArchitectAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Required Info', {
             "fields": (
-                ('architect', 'cell_phone'), 
+                ('architect', 'cell_phone',),
             ),
         }),
     )
