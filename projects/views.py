@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from projects.models import Project, Owner, Task, Concept
 from users.models import Architect
@@ -94,14 +95,19 @@ def list_tasks(request, id):
     monday2 = (project.end_date - timedelta(days=project.end_date.weekday()))
     weeks_project = int((monday2 - monday1).days / 7)
     
-    tasks_detail = dict()
-    
+    tasks_detail = {}
+    previous_week_len = 0
+
     for task in tasks:
         monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
         monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
         weeks_task = int((monday2 - monday1).days / 7)
-        tasks_detail[task.name] = [Concept.objects.filter(task=task.id).values('description', 'id'), weeks_task]
-        #tasks_detail.update({task.name: [Concept.objects.filter(task=task.id).values('description', 'id'), weeks_task]})
+        tasks_detail[task.name] = [
+            Concept.objects.filter(task=task.id).values('description', 'id'),
+            weeks_task,
+            previous_week_len,
+        ]
+        previous_week_len += weeks_task
 
     return render(
         request, 
@@ -115,14 +121,19 @@ def list_tasks(request, id):
 
 @login_required
 def add_task(request,id):
-
     project = Project.objects.get(pk=id)
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.project= project
-            form.save()
+            data = form.cleaned_data
+            data['project'] = project
+            if not Task.objects.filter(project=project, name=data['name']).__len__():
+                Task.objects.create(**data)
+            else:
+                messages.add_message(request, messages.WARNING, 'YA EXISTE.')
             return redirect('list_tasks/')
+        else:
+            print('NOT VALID')
     else:
         form = TaskForm()
 

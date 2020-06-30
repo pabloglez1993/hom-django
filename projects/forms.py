@@ -11,4 +11,4 @@ class ProjectForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('project','name','start_date','end_date',)
+        fields = ('name','start_date','end_date',)
