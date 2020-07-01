@@ -1,4 +1,5 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import lo
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from projects.models import Project, Owner, Task, Concept
 from users.models import Architect
@@ -9,18 +10,18 @@ from projects.forms import ProjectForm,TaskForm
 
 @login_required
 def list_projects(request):
-    if request.GET:
-        Projects = Project.objects.annotate(
+    if 'search' in request.GET:
+        projects = Project.objects.annotate(
             sum_estimated_price=Sum('task__concept__estimated_price'),
             sum_real_price=Sum('task__concept__real_price'),
         ).filter(name__icontains=request.GET['search'])
     else:    
-        Projects = Project.objects.annotate(
+        projects = Project.objects.annotate(
             sum_estimated_price=Sum('task__concept__estimated_price'),
             sum_real_price=Sum('task__concept__real_price'),
         )
         
-    return render(request, 'projects/list.html', {'projects': Projects})
+    return render(request, 'projects/list.html', {'projects': projects})
 
 @login_required
 def add_project(request):
@@ -94,13 +95,19 @@ def list_tasks(request, id):
     monday2 = (project.end_date - timedelta(days=project.end_date.weekday()))
     weeks_project = int((monday2 - monday1).days / 7)
     
-    tasks_detail = {}
+    tasks_detail = dict()
+    previous_week = 0
     
     for task in tasks:
         monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
         monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
         weeks_task = int((monday2 - monday1).days / 7)
-        tasks_detail[task.name] = [Concept.objects.filter(task=task.id).values('description', 'id'), weeks_task]
+        tasks_detail[task.name] = [
+            Concept.objects.filter(task=task.id).values('description', 'id'), 
+            weeks_task,
+            previous_week,
+        ]
+        previous_week += weeks_task
 
     return render(
         request, 
@@ -119,9 +126,13 @@ def add_task(request,id):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.project= project
-            form.save()
-            return redirect('list_tasks/')
+            data = form.cleaned_data
+            data['project'] = project
+            if not Task.objects.filter(project=project, name=data['name']).__len__():
+                Task.objects.create(**data)
+            else:
+                messages.add_message(request, messages.WARNING, 'YA EXISTE.')
+            return redirect('list_tasks')
     else:
         form = TaskForm()
 

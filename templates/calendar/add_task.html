@@ -20,7 +20,14 @@
 {% block container %}
 <div style="height: 80vh" class="row">
 <div class="col-4 mx-auto my-auto">
-<form method="POST" action="{% url 'list_tasks' id %}">
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="POST" action="{% url 'add_task' id %}">
     {% csrf_token %}
 
   

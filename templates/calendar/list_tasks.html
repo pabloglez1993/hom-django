@@ -39,6 +39,9 @@
         {% for k, v in tasks_detail.items %}
         <tr>
         <th scope="row">{{ k }}</th>
+        {% if v.2 %}
+        <td colspan="{{ v.2 }}"></td>
+        {% endif %}
         <td colspan="{{ v.1 }}">
             {% for description in v.0 %}
             <div class="card">
