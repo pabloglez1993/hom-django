@@ -35,8 +35,8 @@
                 </h5>
                 <div class="card-body">
                 <h5 class="card-title"><b>Owner:</b> {{ project.owner }}</h5>
-                <p class="card-text"><b>Type:</b> {{ project.type }} <b>Area:</b> {{ project.area }}</p>
-                <p class="card-text"><b>Estimated Price:</b> {{ project.sum_estimated_price|floatformat:2 }} <b>Real Price:</b> {{ project.sum_real_price|floatformat:2 }}</p>
+                <p class="card-text"><b>Type:</b> {{ project.type }} <b>Area:</b> {{ project.area }} m<sup>2</sup></p>
+                <p class="card-text"><b>Estimated Price:</b> ${{ project.sum_estimated_price|floatformat:2 }} <b>Real Price:</b> ${{ project.sum_real_price|floatformat:2 }}</p>
                 <p class="card-text"><b>Started:</b> {{ project.start_date }} <b>Ended:</b> {{ project.end_date }}</p>
                 <a href="{% url 'list_tasks' project.id %}" class="btn btn-secondary">Details</a>
                 <a href="{% url 'edit_project' project.id %}" class="btn btn-dark">Edit</a>
