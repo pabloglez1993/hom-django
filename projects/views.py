@@ -188,10 +188,10 @@ def edit_task(request, id, id2):
 
 @login_required
 def add_concept(request, id, id2):
-    project = Project.objects.get(pk= id2)
+    project = Project.objects.get(pk= id)
     tasks = Task.objects.filter(project=project).order_by('start_date')
     for n in tasks:
-        if n.pk == id:
+        if n.pk == id2:
             task = n
 
     if request.method == 'POST':
