@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+<title>Add Task</title>
+{% endblock %}
+
+{% block nav %}
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'list_tasks' project.id %}">Tasks</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block container %}
+<div style="height: 80vh" class="row">
+<div class="col-4 mx-auto my-auto">
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="POST" action="{% url 'add_concept' id=project.id id2=task.id %}">
+    {% csrf_token %}
+
+  
+    <div class="form-group">
+        <label for="description">Concept Description</label>
+        <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="description" name="description">
+        <div class="invalid-feedback">
+            {% for error in form.name.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="estimated_volume"> Estimated Volume </label>
+        <input type="number" class="form-control" id="estimated_volume" name="estimated_volume" >
+    </div>
+ 
+    <div class="form-group">
+        <label for="estimated_price"> Estimated Price </label>
+        <input type="number" class="form-control" id="estimated_price" name="estimated_price" >
+
+        <label for="unit"> Unit </label>
+        <input type="text" class="form-control" id="unit" name="unit" >
+    </div>
+
+    <div class="form-group">
+        <label for="real_volume"> Real Volume </label>
+        <input type="number" class="form-control" id="real_volume" name="real_volume" >
+    </div>
+
+    <div class="form-group">
+        <label for="real_price"> Real Price </label>
+        <input type="number" class="form-control" id="real_price" name="real_price" >
+    </div>
+
+    <button type="submit" class="btn btn-dark">Save</button>
+</form>
+</div>
+</div>
+{% endblock %}

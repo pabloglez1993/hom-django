@@ -1,5 +1,5 @@
 from django import forms
-from projects.models import Project,Task
+from projects.models import Project,Task,Concept
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -12,3 +12,8 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ('name','start_date','end_date',)
+
+class ConceptForm(forms.ModelForm):
+    class Meta:
+        model = Concept
+        fields = ('description','estimated_volume','estimated_price','unit','real_volume','real_price',)
