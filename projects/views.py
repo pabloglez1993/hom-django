@@ -6,7 +6,7 @@ from users.models import Architect
 from django.db.models import Sum, Max, Min
 from datetime import datetime, timedelta
 
-from projects.forms import ProjectForm,TaskForm
+from projects.forms import ProjectForm,TaskForm,ConceptForm
 
 @login_required
 def list_projects(request):
@@ -90,7 +90,7 @@ def delete_project(request, id):
 def list_tasks(request, id):
     project = Project.objects.get(pk=id)
     tasks = Task.objects.filter(project=id).order_by('start_date')
-
+    
     monday1 = (project.start_date - timedelta(days=project.start_date.weekday()))
     monday2 = (project.end_date - timedelta(days=project.end_date.weekday()))
     weeks_project = int((monday2 - monday1).days / 7)
@@ -102,11 +102,14 @@ def list_tasks(request, id):
         monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
         monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
         weeks_task = int((monday2 - monday1).days / 7)
+        task_id = int(task.id)
         tasks_detail[task.name] = [
             Concept.objects.filter(task=task.id).values('description', 'id'), 
             weeks_task,
             previous_week,
-        ]
+            task_id,
+            Concept.objects.filter(task=task.id).values('description', 'id', 'estimated_volume', 'estimated_price', 'unit', 'real_volume', 'real_price') 
+        ]   
         previous_week += weeks_task
 
     return render(
@@ -115,7 +118,9 @@ def list_tasks(request, id):
         {
             'project': project,
             'weeks_project': range(1, weeks_project),
-            'tasks_detail': tasks_detail
+            'tasks_detail': tasks_detail,
+            'tasks': tasks,
+
         }
     )
 
@@ -132,7 +137,7 @@ def add_task(request,id):
                 Task.objects.create(**data)
             else:
                 messages.add_message(request, messages.WARNING, 'YA EXISTE.')
-            return redirect('list_tasks')
+            return redirect('list_tasks',id)
     else:
         form = TaskForm()
 
@@ -144,27 +149,29 @@ def add_task(request,id):
             'form': form, 
         }
     )
-
-def delete_task(request, id):
-    task = Task.objects.get(pk=id)
-    task.delete()
-    return redirect('list_task')
+    
+@login_required
+def delete_task(request, id, id2):
+    tasks = Task.objects.filter(project=id2).order_by('start_date')
+    #import pdb; pdb.set_trace()
+    for n in tasks:
+        if n.pk == id:
+            tarea_a_borrar = n
+    tarea_a_borrar.delete()
+    return redirect('list_tasks',id2)
 
 
 @login_required
-def edit_task(request, project_id, task_id):
-    project = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
+def edit_task(request, id, id2):
+    project = Project.objects.get(pk= id2)
+    task = Task.objects.get(pk= id, project=project)
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            task.project = project_id
-            task.name = data['name']
-            task.start_date = data['start_date']
-            task.end_date = data['end_date']
-            project.save()
-            return redirect('list_task/')
+            data['project'] = project
+            Task.objects.filter(pk=id, project=data['project']).update(**data)
+            return redirect('list_tasks',id2)
     else:
         form = TaskForm()
 
@@ -175,8 +182,73 @@ def edit_task(request, project_id, task_id):
             'task':task,
             'project': project, 
             'form': form, 
-            'architects': architects,
-            'owners': owners,
-            'types': Project.BUILDING_TYPES
+            'messages': messages
         }
     )
+
+@login_required
+def add_concept(request, id, id2):
+    project = Project.objects.get(pk= id2)
+    tasks = Task.objects.filter(project=project).order_by('start_date')
+    for n in tasks:
+        if n.pk == id:
+            task = n
+
+    if request.method == 'POST':
+        form = ConceptForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            data['task'] = task
+            if not Task.objects.filter(project=project, name=data['description']).__len__():
+                Concept.objects.create(**data)
+            else:
+                messages.add_message(request, messages.WARNING, 'YA EXISTE.')
+            return redirect('list_tasks',id)
+    else:
+        form = TaskForm()
+
+    return render(
+        request, 
+        'calendar/add_concept.html',
+        {
+            'task': task,
+            'project': project,
+            'form': form,
+            'message': messages 
+        }
+    )
+
+@login_required
+def edit_concepto(request,id,id2,id3):
+
+    project = Project.objects.get(pk= id2)
+    task = Task.objects.get(pk= id, project=project) 
+    concept = Concept.objects.get(pk= id3, task=task)
+    if request.method == 'POST':
+        form = ConceptForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            data['task'] = task
+            Concept.objects.filter(pk=id3, task=task).update(**data)
+            return redirect('list_tasks',id2)
+    else:
+        form = ConceptForm()
+
+    return render(
+        request, 
+        'calendar/edit_concepto.html', 
+        {
+            'task':task,
+            'project': project, 
+            'form': form, 
+            'concept': concept,
+        }
+    )
+
+@login_required
+def delete_concepto(request,id,id2,id3):
+    project = Project.objects.get(pk= id2)
+    task = Task.objects.get(pk = id, project=project)
+    concept = Concept.objects.get(pk = id3, task=task)
+    concept.delete()
+    return redirect('list_tasks',id2)   
