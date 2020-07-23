@@ -46,9 +46,33 @@
         <td colspan="{{ v.1 }}">
         
         <a href="{% url 'edit_task' id=v.3 id2=project.id %}" class="btn btn-dark">Edit Task</a>
-        <a href="{% url 'delete_task' id=v.3 id2=project.id %}" class="btn btn-danger">Delete</a>
+        
         <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo{{ v.3 }}">Details</button>  
-        <a href="{% url 'add_concept' id=project.id id2=v.3 %}" class="btn btn-dark">Add Concep To The Task</a>  
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ v.3 }}">
+            Delete
+        </button>
+        <div class="modal fade" id="exampleModal{{ v.3 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Borrar elemento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                   Estas seguro que quieres borrar este elemento?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No borrar</button>
+                    <a href="{% url 'delete_task' id=v.3 id2=project.id %}" class="btn btn-danger">Delete</a>
+                  </div>
+                </div>
+              </div>
+        </div>
+         
+
+
             {% for description in v.4 %}
             <div id="demo{{ v.3 }}" class="collapse" >
                 <div class="card">
@@ -56,7 +80,30 @@
                         
                             <p class="card-text">{{ description.description }}</p> 
                             <a href="{% url 'edit_concepto' id=v.3 id2=project.id id3=description.id %}" class="btn btn-dark">Edit</a>
-                            <a href="{% url 'delete_concepto' id=v.3 id2=project.id id3=description.id %}" class="btn btn-danger">Delete</a>
+                            
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ description.id }}">
+                                Delete
+                            </button>
+                            <div class="modal fade" id="exampleModal{{ description.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Borrar elemento</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                       Estas seguro que quieres borrar este elemento?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No borrar</button>
+                                        <a href="{% url 'delete_concepto' id=v.3 id2=project.id id3=description.id %}" class="btn btn-danger">Borrar</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </div>
+                            
                             <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo-concept{{ description.id }}">Details</button> 
                             <div id="demo-concept{{ description.id }}" class="collapse">
                                 <p class="card-text"> Estimated Volume: {{ description.estimated_volume }} </p>

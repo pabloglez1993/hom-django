@@ -247,6 +247,7 @@ def edit_concepto(request,id,id2,id3):
 
 @login_required
 def delete_concepto(request,id,id2,id3):
+    
     project = Project.objects.get(pk= id2)
     task = Task.objects.get(pk = id, project=project)
     concept = Concept.objects.get(pk = id3, task=task)
