@@ -1,3 +1,5 @@
+import math
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -99,18 +101,25 @@ def list_tasks(request, id):
     previous_week = 0
     
     for task in tasks:
-        monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
-        monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
-        weeks_task = int((monday2 - monday1).days / 7)
+        #monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
+        #monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
+        #weeks_task = int((monday2 - monday1).days / 7)
+        weeks_task = math.ceil((task.end_date - task.start_date).days / 7)
+        if previous_week == 0:
+            previous_date = math.floor((task.start_date - task.start_date).days / 7)
+        else:
+            previous_date = math.floor((task.start_date - previous_date).days / 7)
         task_id = int(task.id)
         tasks_detail[task.name] = [
             Concept.objects.filter(task=task.id).values('description', 'id'), 
             weeks_task,
-            previous_week,
+            #previous_week,
+            previous_date,
             task_id,
             Concept.objects.filter(task=task.id).values('description', 'id', 'estimated_volume', 'estimated_price', 'unit', 'real_volume', 'real_price') 
         ]   
         previous_week += weeks_task
+        previous_date = task.start_date
 
     return render(
         request, 
@@ -119,8 +128,6 @@ def list_tasks(request, id):
             'project': project,
             'weeks_project': range(1, weeks_project),
             'tasks_detail': tasks_detail,
-            'tasks': tasks,
-
         }
     )
 
