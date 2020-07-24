@@ -29,9 +29,9 @@
     <table class="table">
     <thead class="thead-light">
         <tr>
-        <th scope="col"></th>
+        <th scope="col">Tasks</th>
         {% for week in weeks_project %}
-        <th>{{ week }}</th>
+        <th scope="col">{{ week }}</th>
         {% endfor %}
         </tr>
     </thead>
@@ -39,40 +39,38 @@
 
         {% for k, v in tasks_detail.items %}
         <tr>
-        <th scope="row">{{ k }}</th>
+        <th scope="row">
+          <p>{{ k }}</p>
+          <a href="{% url 'edit_task' id=v.3 id2=project.id %}" class="btn btn-dark">Edit Task</a>
+        
+          <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo{{ v.3 }}">Details</button>  
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ v.3 }}">
+              Delete
+          </button>
+          <div class="modal fade" id="exampleModal{{ v.3 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Borrar elemento</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                    Estas seguro que quieres borrar este elemento?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">No borrar</button>
+                      <a href="{% url 'delete_task' id=v.3 id2=project.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </th>
         {% if v.2 %}
         <td colspan="{{ v.2 }}"></td>
         {% endif %}
         <td colspan="{{ v.1 }}">
-        
-        <a href="{% url 'edit_task' id=v.3 id2=project.id %}" class="btn btn-dark">Edit Task</a>
-        
-        <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo{{ v.3 }}">Details</button>  
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ v.3 }}">
-            Delete
-        </button>
-        <div class="modal fade" id="exampleModal{{ v.3 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Borrar elemento</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                   Estas seguro que quieres borrar este elemento?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No borrar</button>
-                    <a href="{% url 'delete_task' id=v.3 id2=project.id %}" class="btn btn-danger">Delete</a>
-                  </div>
-                </div>
-              </div>
-        </div>
-         
-
-
             {% for description in v.4 %}
             <div id="demo{{ v.3 }}" class="collapse" >
                 <div class="card">
