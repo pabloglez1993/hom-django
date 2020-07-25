@@ -36,7 +36,7 @@ def add_project(request):
             return redirect('list_projects')
     else:
         form = ProjectForm()
-
+    
     return render(
         request, 
         'projects/add_project.html',

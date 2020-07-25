@@ -34,11 +34,21 @@
         <div class="form-row">
         <div class="form-group col-md-6">
             <label for="start_date">Start Date</label>
-            <input type="date" class="form-control" id="start_date" value="{{ task.start_date|date:'Y-m-d' }}" name="start_date">
+            <input type="date" class="form-control {% if form.start_date.errors %}is-invalid{% endif %}" id="start_date" value="{{ task.start_date|date:'Y-m-d' }}" name="start_date">
+            <div class="invalid-feedback">
+            {% for error in form.start_date.errors %}
+                {{ error }}
+            {% endfor %}
+            </div>
         </div>
         <div class="form-group col-md-6">
             <label for="end_date">End Date</label>
-            <input type="date" class="form-control" id="end_date" value="{{ task.end_date|date:'Y-m-d' }}" name="end_date">
+            <input type="date" class="form-control {% if form.end_dates.errors %}is-invalid{% endif %}" id="end_date" value="{{ task.end_date|date:'Y-m-d' }}" name="end_date">
+            <div class="invalid-feedback">
+            {% for error in form.end_date.errors %}
+                {{ error }}
+            {% endfor %}
+            </div>
         </div>
     </div>
     <button type="submit" class="btn btn-dark">Save</button>
