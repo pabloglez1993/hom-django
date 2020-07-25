@@ -36,7 +36,7 @@ def add_project(request):
             return redirect('list_projects')
     else:
         form = ProjectForm()
-
+    
     return render(
         request, 
         'projects/add_project.html',
@@ -97,18 +97,24 @@ def list_tasks(request, id):
     monday2 = (project.end_date - timedelta(days=project.end_date.weekday()))
     weeks_project = int((monday2 - monday1).days / 7)
     
+    weeks_dates = list()
+    week = 0
+    for i in range(weeks_project):
+        weeks_dates.append(monday1 + timedelta(days=week))
+        week += 7
+    
     tasks_detail = dict()
     previous_week = 0
     
     for task in tasks:
-        #monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
-        #monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
-        #weeks_task = int((monday2 - monday1).days / 7)
-        weeks_task = math.ceil((task.end_date - task.start_date).days / 7)
+        monday1 = (task.start_date - timedelta(days=task.start_date.weekday()))
+        monday2 = (task.end_date - timedelta(days=task.end_date.weekday()))
         if previous_week == 0:
-            previous_date = math.floor((task.start_date - task.start_date).days / 7)
+            previous_date = 0
         else:
             previous_date = math.floor((task.start_date - previous_date).days / 7)
+            
+        weeks_task = math.ceil((task.end_date - task.start_date).days / 7) + 1
         task_id = int(task.id)
         tasks_detail[task.name] = [
             Concept.objects.filter(task=task.id).values('description', 'id'), 
@@ -126,7 +132,8 @@ def list_tasks(request, id):
         'calendar/list_tasks.html',
         {
             'project': project,
-            'weeks_project': range(1, weeks_project),
+            #'weeks_project': range(1, weeks_project),
+            'weeks_project': weeks_dates,
             'tasks_detail': tasks_detail,
         }
     )
@@ -139,7 +146,7 @@ def add_task(request,id):
         form = TaskForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            data['project'] = project
+            data['project'] = project            
             if not Task.objects.filter(project=project, name=data['name']).__len__():
                 Task.objects.create(**data)
             else:
