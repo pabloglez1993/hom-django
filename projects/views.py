@@ -165,6 +165,7 @@ def delete_task(request, id, id2):
         if n.pk == id:
             tarea_a_borrar = n
     tarea_a_borrar.delete()
+    tarea_a_borrar.save()
     return redirect('list_tasks',id2)
 
 
@@ -259,4 +260,5 @@ def delete_concepto(request,id,id2,id3):
     task = Task.objects.get(pk = id, project=project)
     concept = Concept.objects.get(pk = id3, task=task)
     concept.delete()
+    concept.save()
     return redirect('list_tasks',id2)   
