@@ -29,7 +29,7 @@
     <table class="table">
     <thead class="thead-light">
         <tr>
-        <th scope="col">Tasks</th>
+        <th scope="col"  >Tasks</th>
         {% for week in weeks_project %}
         <th scope="col">{{ week }}</th>
         {% endfor %}
@@ -39,11 +39,11 @@
 
         {% for k, v in tasks_detail.items %}
         <tr>
-        <th scope="row">
+        <th scope="row" class="d-flex">
           <p>{{ k }}</p>
           <a href="{% url 'edit_task' id=v.3 id2=project.id %}" class="btn btn-dark">Edit Task</a>
         
-          <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo{{ v.3 }}">Details</button>  
+          <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#demo{{ v.3 }}">Show Concepts</button>  
           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ v.3 }}">
               Delete
           </button>

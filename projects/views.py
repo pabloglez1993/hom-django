@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from projects.models import Project, Owner, Task, Concept
 from users.models import Architect
 from django.db.models import Sum, Max, Min
-from datetime import datetime, timedelta
+from datetime import *
 
 from projects.forms import ProjectForm,TaskForm,ConceptForm
 
@@ -148,21 +148,29 @@ def add_task(request,id):
             data = form.cleaned_data
             data['project'] = project            
             if not Task.objects.filter(project=project, name=data['name']).__len__():
-                Task.objects.create(**data)
+                if datetime.strptime(data['start_date'], '%Y-%m-%d').date() >= project.start_date and datetime.strptime(data['end_date'],'%Y-%m-%d').date() <= project.end_date:
+                    Task.objects.create(**data)
+                    return redirect('list_tasks',id)
+                else:
+                    messages.add_message(request, messages.WARNING, 'Fechas no validas.')
+                    return redirect('add_task',id)
             else:
-                messages.add_message(request, messages.WARNING, 'YA EXISTE.')
-            return redirect('list_tasks',id)
+                messages.add_message(request, messages.WARNING, 'Ya existe este task.')
+                return redirect('add_task',id)
+        else:
+            messages.add_message(request, messages.WARNING, 'Informacion no valida.')
+            return redirect('add_task',id)
     else:
         form = TaskForm()
+        return render(
+            request, 
+            'calendar/add_task.html',
+            {
+                'id': id,
+                'form': form, 
+            }
+        )
 
-    return render(
-        request, 
-        'calendar/add_task.html',
-        {
-            'id': id,
-            'form': form, 
-        }
-    )
     
 @login_required
 def delete_task(request, id, id2):
@@ -185,21 +193,26 @@ def edit_task(request, id, id2):
         if form.is_valid():
             data = form.cleaned_data
             data['project'] = project
-            Task.objects.filter(pk=id, project=data['project']).update(**data)
-            return redirect('list_tasks',id2)
+            if datetime.strptime(data['start_date'], '%Y-%m-%d').date() >= project.start_date and datetime.strptime(data['end_date'],'%Y-%m-%d').date() <= project.end_date:
+                Task.objects.filter(pk=id, project=data['project']).update(**data)
+                return redirect('list_tasks',id2)
+            else:
+                messages.add_message(request, messages.WARNING, 'Fechas no validas.')
+                return redirect('edit_task',id,id2)
+        else:
+            messages.add_message(request, messages.WARNING, 'Informacion no valida.')
+            return redirect('edit_task',id,id2)
     else:
         form = TaskForm()
-
-    return render(
-        request, 
-        'calendar/edit_task.html', 
-        {
-            'task':task,
-            'project': project, 
-            'form': form, 
-            'messages': messages
-        }
-    )
+        return render(
+            request, 
+            'calendar/edit_task.html', 
+            {
+                'task':task,
+                'project': project, 
+                'form': form, 
+            }
+        )
 
 @login_required
 def add_concept(request, id, id2):
@@ -215,10 +228,11 @@ def add_concept(request, id, id2):
             data = form.cleaned_data
             data['task'] = task
             if not Task.objects.filter(project=project, name=data['description']).__len__():
-                Concept.objects.create(**data)
+                Concept.objects.create(**data).save()
+                return redirect('list_tasks',id)
             else:
                 messages.add_message(request, messages.WARNING, 'YA EXISTE.')
-            return redirect('list_tasks',id)
+                return redirect('add_concept',id,id2)
     else:
         form = TaskForm()
 
@@ -246,6 +260,7 @@ def edit_concepto(request,id,id2,id3):
             data['task'] = task
             Concept.objects.filter(pk=id3, task=task).update(**data)
             return redirect('list_tasks',id2)
+            
     else:
         form = ConceptForm()
 
