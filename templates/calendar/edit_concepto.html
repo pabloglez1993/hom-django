@@ -26,7 +26,7 @@
   
     <div class="form-group">
         <label for="description">Concept Description</label>
-        <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="description" name="description" value={{concept.description}}>
+        <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="description" name="description" value="{{concept.description}}">
         <div class="invalid-feedback">
             {% for error in form.name.errors %}
                 {{ error }}

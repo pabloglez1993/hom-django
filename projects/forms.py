@@ -28,15 +28,6 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ('name','start_date','end_date',)
-        
-    # def clean_project(self):
-    #     project = self.data['project']
-    #     sd = self.data['start_date']
-    #     ed = self.data['end_date']
-        
-    #     if project.start_date <= sd and project.end_date >= ed:
-    #         raise forms.ValidationError("Task dates out of range")
-    #     return project
     
     def clean_start_date(self):
         sd = self.data['start_date']
